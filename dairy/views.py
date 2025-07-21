@@ -357,7 +357,7 @@ def security_questions(request):
 
 
 
-
+@csrf_exempt
 def reset_password(request, username):
     try:
         user = User.objects.get(username=username)
