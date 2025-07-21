@@ -87,6 +87,7 @@ class MyPageView(View):
         except AuthenticationFailed:
             return redirect('log_in')
 
+    @csrf_exempt
     def get(self, request):
         form = MyPageForm()
         entries = MyPage.objects.filter(username=request.user.username).order_by('-upload_time')
