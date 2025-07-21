@@ -1,0 +1,205 @@
+{% block content %}
+<style>
+    /* Existing styles */
+    .user-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .page-title {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        font-weight: bold;
+    }
+    .content-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 25px;
+        transition: transform 0.2s;
+    }
+    .content-card:hover {
+        transform: translateY(-5px);
+    }
+    .card-image {
+        width: 100%;
+        border-radius: 10px 10px 0 0;
+        object-fit: cover;
+        max-height: 400px;
+    }
+    .card-content {
+        padding: 20px;
+    }
+    .content-text {
+        color: #34495e;
+        font-size: 1.1em;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+    .timestamp {
+        color: #7f8c8d;
+        font-size: 0.9em;
+        font-style: italic;
+    }
+    .empty-message {
+        text-align: center;
+        color: #95a5a6;
+        font-size: 1.2em;
+        padding: 20px;
+    }
+    .alert-custom {
+        padding: 15px;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 1.1em;
+    }
+    .alert-warning-custom {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+    .alert-info-custom {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+    }
+    .date-filter {
+        margin: 20px 0;
+        text-align: center;
+    }
+    .date-input {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin: 0 10px;
+    }
+    .filter-button {
+        padding: 8px 15px;
+        background-color: #2c3e50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .filter-button:hover {
+        background-color: #34495e;
+    }
+
+    /* Navigation Bar Styles */
+    .navbar {
+        background-color: #2c3e50;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .search-container {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        margin-right: 20px;
+    }
+    .search-input {
+        padding: 8px;
+        width: 200px;
+        border: none;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+    .date-search {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .nav-date-input {
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+        width: 130px;
+    }
+    .nav-buttons {
+        display: flex;
+        gap: 10px;
+    }
+    .nav-button {
+        padding: 8px 15px;
+        background-color: #34495e;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .nav-button:hover {
+        background-color: #465c71;
+        color: white;
+        text-decoration: none;
+    }
+    .search-button {
+        padding: 8px 15px;
+        background-color: #34495e;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
+
+<nav class="navbar">
+    <div class="search-container">
+        <form method="GET" class="date-search">
+            <input type="date" class="nav-date-input" name="start_date" placeholder="Start Date" value="{{ request.GET.start_date }}">
+            <input type="date" class="nav-date-input" name="end_date" placeholder="End Date" value="{{ request.GET.end_date }}">
+            <button type="submit" class="search-button">🔍 Search</button>
+            <a href="{% url 'user_details' %}" class="nav-button" style="float: left;">📚 All Content</a>
+
+        </form>
+    </div>
+    <div class="nav-buttons">
+        <a href="{% url 'home' %}" class="nav-button">🏠 Home</a>
+        <a href="{% url 'sign_up' %}" class="nav-button">📝 Sign Up</a>
+        <a href="{% url 'log_in' %}" class="nav-button">🔑 Login</a>
+        <a href="{% url 'logout' %}" class="nav-button">🚪 Logout</a>
+        <a href="{% url 'my_page' %}" class="nav-button">📓 My Page</a>
+        <a href="{% url 'contact_us' %}" class="nav-button">📞 Contact Us</a>
+        <a href="{% url 'about_us' %}" class="nav-button">ℹ️ About Us</a>
+    </div>
+</nav>
+
+<div class="user-container">
+    {% if user_details %}
+        <h2 class="page-title">{{ user_details.username }}'s Pages</h2>
+
+        {% for page in user_details.pages %}
+            <div class="content-card">
+                {% if page.image %}
+                    <a href="{% url 'view_page_details' page_id=page.id %}">
+                        <img src="{{ page.image }}" class="card-image" alt="User uploaded image">
+                    </a>
+                {% endif %}
+                <div class="card-content">
+                    <p class="timestamp">Uploaded on: {{ page.upload_time|date:"F d, Y H:i" }}</p>
+                    
+                </div>
+            </div>
+        {% empty %}
+            <p class="empty-message">No pages uploaded yet.</p>
+        {% endfor %}
+    {% else %}
+        {% if error %}
+            <div class="alert-custom alert-warning-custom">
+                {{ error }}
+            </div>
+        {% else %}
+            <div class="alert-custom alert-info-custom">
+                Please log in to view your pages.
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

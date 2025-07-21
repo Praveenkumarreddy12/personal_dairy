@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: transparent;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 202px auto;
+            width: 600px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 2rem;
+        }
+        .navbar {
+            background-color: #fff;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: flex-end;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin-left: 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .emoji {
+            margin-right: 5px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{% url 'home' %}" class="nav-button"><span class="emoji">🏠</span>Home</a>
+        <a href="{% url 'about_us' %}" class="nav-button"><span class="emoji">ℹ️</span>About Us</a>
+        <a href="{% url 'contact_us' %}" class="nav-button"><span class="emoji">📞</span>Contact Us</a>
+        <a href="{% url 'sign_up' %}" class="nav-button"><span class="emoji">📝</span>Sign Up</a>
+        <a href="{% url 'log_in' %}" class="nav-button"><span class="emoji">🔑</span>Login</a>
+    </nav>
+    <div class="container">
+        <h1>OTP</h1>
+        <p>An OTP has been sent to your email.</p>
+        <p>Username: {{ username }}</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="otp">Enter OTP:</label><br>
+                <input type="text" id="otp" name="otp"><br>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+        margin: 0;
+        padding-top: 80px;
+        min-height: 100vh;
+    }
+    .navbar {
+        background: rgba(255, 255, 255, 0.95);
+        overflow: hidden;
+        padding: 14px 16px;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
+    }
+    .navbar a {
+        float: right;
+        color: #2c3e50;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+        font-size: 17px;
+        transition: all 0.3s ease;
+        margin-left: 10px;
+        border-radius: 25px;
+    }
+    .navbar a:hover {
+        background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+        color: white;
+        transform: translateY(-2px);
+    }
+    .emoji {
+        font-size: 20px;
+        margin-right: 5px;
+    }
+    .container {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 1200px;
+        margin: 40px auto;
+        backdrop-filter: blur(10px);
+    }
+    h1 {
+        text-align: center;
+        color: #2c3e50;
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+        background: linear-gradient(120deg, #2c3e50 0%, #3498db 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    form {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    .form-half {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    textarea {
+        padding: 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+        color: #2c3e50;
+        height: 400px;
+        resize: vertical;
+    }
+    textarea:focus {
+        border-color: #84fab0;
+        outline: none;
+        box-shadow: 0 0 10px rgba(132, 250, 176, 0.3);
+    }
+    button {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 7px 20px rgba(132, 250, 176, 0.4);
+    }
+    .entry {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .entry-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+    .entry img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin-top: 1rem;
+    }
+    .entry-content {
+        color: #2c3e50;
+    }
+    .timestamp {
+        color: #666;
+        font-size: 0.9rem;
+    }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Page</title>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{% url 'about_us' %}"><span class="emoji">ℹ️</span>About Us</a>
+        <a href="{% url 'contact_us' %}"><span class="emoji">📞</span>Contact Us</a>
+        <a href="{% url 'user_details' %}"><span class="emoji">📚</span>All Content</a>
+        <a href="{% url 'logout' %}"><span class="emoji">🚪</span>Logout</a>
+        <a href="{% url 'log_in' %}"><span class="emoji">🔑</span>Login</a>
+        <a href="{% url 'sign_up' %}"><span class="emoji">📝</span>Sign Up</a>
+        <a href="{% url 'home' %}"><span class="emoji">🏠</span>Home</a>
+    </nav>
+
+    <div class="container">
+        {% block content %}
+        <h1>My Page</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-half">
+                {{ form.image }}
+                <div id="imagePreview" style="margin-top: 10px; display: none;">
+                    <img id="preview" src="#" alt="Preview" style="max-width: 100%; height: auto; border-radius: 10px;">
+                </div>
+            </div>
+            <div class="form-half">
+                <textarea name="content" placeholder="Write your thoughts here...">{{ form.content.value|default:'' }}</textarea>
+                <button type="submit">Add Entry</button>
+            </div>
+        </form>
+
+        <script>
+            document.querySelector('input[type="file"]').addEventListener('change', function(e) {
+                const preview = document.getElementById('preview');
+                const previewDiv = document.getElementById('imagePreview');
+                
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        previewDiv.style.display = 'block';
+                    }
+                    
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        </script>
+
+        <h2>Entries</h2>
+        
+        {% for entry in entries %}
+            <div class="entry">
+                <div class="entry-grid">
+                    <div>
+                        <p class="timestamp">Uploaded on: {{ entry.upload_time }}</p>
+                        <h3>{{ entry.username }}</h3>
+                        {% if entry.image %}
+                            <a href="{% url 'view_page_details' entry.id %}">
+                                <img src="{{ entry.image.url }}" alt="{{ entry.user.username }}'s image">
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="entry-content">
+                        <h2>Special things of the day:</h2>
+                        <p>{{ entry.content|linebreaks }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No entries yet.</p>
+        {% endfor %}
+
+        {% endblock %}
+    </div>
+</body>
+</html>

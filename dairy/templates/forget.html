@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Questions</title>
+    <style>
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .nav-button {
+            float: right;
+            margin-left: 10px;
+            background-color: #4CAF50;
+            color: rgb(255, 255, 255);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .nav-button:hover {
+            background-color: #45a049;
+        }
+        .navbar {
+            background-color: #fff;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: flex-end;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin-left: 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .emoji {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{% url 'home' %}" class="nav-button"><span class="emoji">🏠</span>Home</a>
+        <a href="{% url 'about_us' %}" class="nav-button"><span class="emoji">ℹ️</span>About Us</a>
+        <a href="{% url 'contact_us' %}" class="nav-button"><span class="emoji">📞</span>Contact Us</a>
+        <a href="{% url 'sign_up' %}" class="nav-button"><span class="emoji">📝</span>Sign Up</a>
+        <a href="{% url 'log_in' %}" class="nav-button"><span class="emoji">🔑</span>Login</a>
+        <a href="{% url 'log_in' %}" class="nav-button"><span class="emoji"></span></a>
+    </nav>
+    <div class="container">
+        <h2>Security Questions</h2>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="primary_school">What is your primary school name?</label>
+                <input type="text" id="primary_school" name="primary_school" required>
+            </div>
+
+            <div class="form-group">
+                <label for="favorite_color">What's your favourite color?</label>
+                <input type="text" id="favorite_color" name="favorite_color" required>
+            </div>
+
+            <div class="form-group">
+                <label for="pet_name">What's your pet name?</label>
+                <input type="text" id="pet_name" name="pet_name" required>
+            </div>
+
+            <button type="submit">Submit</button>
+        <div class="login-button">
+            <a href="{% url 'log_in' %}" class="nav-button">Login</a>
+        </div>
+        <div class="send-otp-button">
+            <a href="{% url 'send_otp' %}" class="nav-button">Send OTP</a>
+        </div>
+        </form>
+    </div>
+</body>
+</html>
