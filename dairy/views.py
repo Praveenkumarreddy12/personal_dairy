@@ -19,8 +19,10 @@ from django.conf import settings
 import random
 import string
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
+@csrf_exempt
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
