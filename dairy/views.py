@@ -116,7 +116,7 @@ def logout(request):
     # Logout the user
     auth.logout(request)
     return redirect('home')
-
+@csrf_exempt
 def contact_us(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -257,6 +257,7 @@ def ads_image(request):
 def generate_otp():
     return ''.join(random.choices(string.digits, k=6))
 
+@csrf_exempt
 def forget_password(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -288,6 +289,7 @@ def forget_password(request):
             
     return render(request, 'forget.html')
 
+@csrf_exempt
 def send_otp(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -304,7 +306,7 @@ def send_otp(request):
             return redirect('forget_password')
     return render(request, 'send_otp.html')
 
-
+@csrf_exempt
 def check_otp(request, username):
     if request.method == 'POST':
         otp = request.POST.get('otp')
@@ -324,7 +326,7 @@ def check_otp(request, username):
     return render(request, 'otp.html', {'username': username})
 
 
-
+@csrf_exempt
 def security_questions(request):
     if request.method == 'POST':
         # Get username from session that was stored during signup
