@@ -36,7 +36,7 @@ def sign_up(request):
     return render(request, 'sign_up.html', {'form': form})
 
 # to store token value instently
-
+@csrf_exempt
 def log_in(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
