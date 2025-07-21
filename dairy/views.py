@@ -92,6 +92,7 @@ class MyPageView(View):
         entries = MyPage.objects.filter(username=request.user.username).order_by('-upload_time')
         return render(request, 'my_page.html', {'form': form, 'entries': entries})
 
+    @csrf_exempt
     def post(self, request):
         form = MyPageForm(request.POST, request.FILES)
         if form.is_valid():
