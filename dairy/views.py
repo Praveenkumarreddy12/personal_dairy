@@ -72,7 +72,8 @@ class CustomTokenAuthentication(TokenAuthentication):
             raise AuthenticationFailed('Token has expired')
 
         return (token.user, token)
-
+        
+@method_decorator(csrf_exempt, name='dispatch')
 class MyPageView(View):
     def dispatch(self, request, *args, **kwargs):
         token_key = request.session.get('auth_token')
@@ -87,13 +88,11 @@ class MyPageView(View):
         except AuthenticationFailed:
             return redirect('log_in')
 
-    @csrf_exempt
     def get(self, request):
         form = MyPageForm()
         entries = MyPage.objects.filter(username=request.user.username).order_by('-upload_time')
         return render(request, 'my_page.html', {'form': form, 'entries': entries})
 
-    @csrf_exempt
     def post(self, request):
         form = MyPageForm(request.POST, request.FILES)
         if form.is_valid():
