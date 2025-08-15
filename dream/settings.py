@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'dream.urls'
@@ -156,4 +157,5 @@ EMAIL_PORT = 587  # Common port for TLS
 EMAIL_USE_TLS = True  # Use TLS
 EMAIL_HOST_USER = 'dmydairy@gmail.com'  # Your email address
 EMAIL_HOST_PASSWORD = 'zhag eefe xxjj eyky'  # Your email password
+
 
